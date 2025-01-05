@@ -23,7 +23,7 @@ const menuItems = [
   {
     icon: <BsCashCoin />,
     title: 'Gasto y Ahorro Mensual',
-    path: '/mes/enero'
+    path: '/mes'
   },
   {
     icon: <TbPigMoney  />,
