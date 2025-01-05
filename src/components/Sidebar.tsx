@@ -1,5 +1,4 @@
 
-import { CiLogout } from 'react-icons/ci';
 import { SidebarItem } from './SidebarItem';
 import { IoCalendarOutline  } from 'react-icons/io5';
 import { BsCashCoin } from "react-icons/bs";

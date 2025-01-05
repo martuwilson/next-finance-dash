@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Card, CardContent, Box } from '@mui/material';
 import AddGastoModal from '@/components/AddGastoModal';
+import EditGastoModal from '@/components/EditGastoModal'
 
 interface GastoFijo {
   id: number;
@@ -18,33 +19,57 @@ const initialGastosFijos: GastoFijo[] = [
 
 export default function GastosFijos() {
   const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(initialGastosFijos);
-  const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [newDetalle, setNewDetalle] = useState('');
   const [newMonto, setNewMonto] = useState<number | string>('');
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editDetalle, setEditDetalle] = useState('');
+  const [editMonto, setEditMonto] = useState<number | string>('');
 
   const handleAddGasto = () => {
-    setOpen(true);
+    setOpenAdd(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
   };
 
-  const handleSave = () => {
+  const handleSaveAdd = () => {
     const newGasto: GastoFijo = { id: gastosFijos.length + 1, detalle: newDetalle, monto: Number(newMonto) };
     setGastosFijos([...gastosFijos, newGasto]);
-    setOpen(false);
+    setOpenAdd(false);
     setNewDetalle('');
     setNewMonto('');
   };
 
   const handleEditGasto = (id: number) => {
-    // Lógica para editar un gasto
-    console.log('Editar gasto', id);
+    const gasto = gastosFijos.find(g => g.id === id);
+    if (gasto) {
+      setEditId(id);
+      setEditDetalle(gasto.detalle);
+      setEditMonto(gasto.monto);
+      setOpenEdit(true);
+    }
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleSaveEdit = () => {
+    if (editId !== null) {
+      setGastosFijos(gastosFijos.map(gasto => 
+        gasto.id === editId ? { ...gasto, detalle: editDetalle, monto: Number(editMonto) } : gasto
+      ));
+      setOpenEdit(false);
+      setEditId(null);
+      setEditDetalle('');
+      setEditMonto('');
+    }
   };
 
   const handleDeleteGasto = (id: number) => {
-    // Lógica para eliminar un gasto
     setGastosFijos(gastosFijos.filter(gasto => gasto.id !== id));
   };
 
@@ -85,15 +110,25 @@ export default function GastosFijos() {
           <Typography variant="h4" color="primary">${totalGastoFijo}</Typography>
         </CardContent>
       </Card>
-      {/* Modal agregar gasto */}
+
       <AddGastoModal
-        open={open}
-        handleClose={handleClose}
-        handleSave={handleSave}
+        open={openAdd}
+        handleClose={handleCloseAdd}
+        handleSave={handleSaveAdd}
         newDetalle={newDetalle}
         setNewDetalle={setNewDetalle}
         newMonto={newMonto}
         setNewMonto={setNewMonto}
+      />
+
+      <EditGastoModal
+        open={openEdit}
+        handleClose={handleCloseEdit}
+        handleSave={handleSaveEdit}
+        editDetalle={editDetalle}
+        setEditDetalle={setEditDetalle}
+        editMonto={editMonto}
+        setEditMonto={setEditMonto}
       />
     </div>
   );
