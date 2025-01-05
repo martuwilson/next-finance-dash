@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Card, CardContent, Box } from '@mui/material';
+import AddGastoModal from '@/components/AddGastoModal';
 
 interface GastoFijo {
   id: number;
@@ -17,11 +18,24 @@ const initialGastosFijos: GastoFijo[] = [
 
 export default function GastosFijos() {
   const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(initialGastosFijos);
+  const [open, setOpen] = useState(false);
+  const [newDetalle, setNewDetalle] = useState('');
+  const [newMonto, setNewMonto] = useState<number | string>('');
 
   const handleAddGasto = () => {
-    // Lógica para agregar un nuevo gasto
-    const newGasto: GastoFijo = { id: gastosFijos.length + 1, detalle: 'Nuevo Gasto', monto: 0 };
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSave = () => {
+    const newGasto: GastoFijo = { id: gastosFijos.length + 1, detalle: newDetalle, monto: Number(newMonto) };
     setGastosFijos([...gastosFijos, newGasto]);
+    setOpen(false);
+    setNewDetalle('');
+    setNewMonto('');
   };
 
   const handleEditGasto = (id: number) => {
@@ -71,6 +85,16 @@ export default function GastosFijos() {
           <Typography variant="h4" color="primary">${totalGastoFijo}</Typography>
         </CardContent>
       </Card>
+      {/* Modal agregar gasto */}
+      <AddGastoModal
+        open={open}
+        handleClose={handleClose}
+        handleSave={handleSave}
+        newDetalle={newDetalle}
+        setNewDetalle={setNewDetalle}
+        newMonto={newMonto}
+        setNewMonto={setNewMonto}
+      />
     </div>
   );
 }
