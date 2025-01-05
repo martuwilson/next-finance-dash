@@ -1,33 +1,33 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormControl, InputLabel, Select, MenuItem, Typography, Box } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Typography, Box } from "@mui/material";
 
 export default function GastoMensualPage() {
   const router = useRouter();
 
-interface HandleMonthChangeEvent {
-    target: {
-        value: string;
-    };
-}
+  const [selectedMonth, setSelectedMonth] = useState("");
 
-const handleMonthChange = (e: HandleMonthChangeEvent) => {
-    const selectedMonth = e.target.value;
-    if (selectedMonth) {
-        router.push(`/mes/${selectedMonth}`);
+  const handleMonthChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const month = event.target.value as string;
+    setSelectedMonth(month);
+    if (month) {
+      router.push(`/mes/${month}`);
     }
-};
+  };
 
   return (
     <Box mt={4}>
-      <Typography variant="h4" gutterBottom>Selecciona un mes</Typography>
+      <Typography variant="h4" gutterBottom>
+        Selecciona un mes
+      </Typography>
       <FormControl variant="outlined" style={{ minWidth: 200 }}>
         <InputLabel id="month-select-label">Mes</InputLabel>
         <Select
           labelId="month-select-label"
           id="month-select"
+          value={selectedMonth}
           onChange={handleMonthChange}
           label="Mes"
         >
