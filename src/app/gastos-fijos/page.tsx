@@ -52,7 +52,7 @@ export default function GastosFijos() {
 
   return (
     <div>
-      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mb={4}>
+      <Box mb={4}>
         <Typography variant="h4" gutterBottom>Gastos Fijos</Typography>
         <Button variant="contained" color="primary" onClick={handleAddGasto}>Agregar Gasto</Button>
       </Box>
